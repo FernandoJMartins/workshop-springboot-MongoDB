@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +52,16 @@ public class UserResource {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable String id) {
-		srv.delete(id);
+		srv.delete(id);	
 		return ResponseEntity.noContent().build();
 	} 
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> update(@RequestBody UserDTO userdto, @PathVariable String id) {
+		User user = srv.fromDTO(userdto);
+		user.setId(id);
+		user = srv.update(user);
+		
+		return ResponseEntity.noContent().build();
+	}
 }
